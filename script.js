@@ -97,3 +97,32 @@ const nextMonth = () => {
 //add eventlistener on prev and next
 prev.addEventListener('click', prevMonth)
 next.addEventListener('click', nextMonth)
+
+todayBtn.addEventListener('click', () => {
+  today = new Date()
+  month = today.getMonth()
+  year = today.getFullYear()
+
+  initCalendar()
+})
+
+dateInput.addEventListener('keyup', (e) => {
+  //regex to remove slashes
+  dateInput.value = dateInput.value.replace(/[^0-9/]/g, '')
+  if(dateInput.value.length === 2) {
+    //add a slash after two numbers
+    dateInput.value += "/"
+  }
+
+  if(dateInput.value.length > 7) {
+    //block if exist more than 7 characters
+    dateInput.value = dateInput.value.slice(0, 7)
+  }
+
+  //if backspace is pressed
+  if(e.inputType === "deleteContentBackward") {
+    if(dateInput.value.length === 3) {
+      dateInput.value = dateInput.value.slice(0, 2)
+    }
+  }
+})
