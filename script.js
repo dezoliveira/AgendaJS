@@ -2,7 +2,10 @@ const calendar = document.querySelector('.calendar'),
   data = document.querySelector('.date'),
   daysContainer = document.querySelector('.days'),
   prev = document.querySelector('.prev'),
-  next = document.querySelector('.next')
+  next = document.querySelector('.next'),
+  todayBtn = document.querySelector('.today-btn'),
+  gotoBtn = document.querySelector('.goto-btn'),
+  dateInput = document.querySelector('.date-input')
 
 let today = new Date()
 let activeDay
@@ -69,3 +72,28 @@ const initCalendar = () => {
 }
 
 initCalendar()
+
+//prev month
+const prevMonth = () => {
+  month--
+  if(month < 0) {
+    month = 11
+    year--
+  }
+
+  initCalendar()
+}
+
+const nextMonth = () => {
+  month++
+  if(month > 11) {
+    month = 0
+    year++
+  }
+
+  initCalendar()
+}
+
+//add eventlistener on prev and next
+prev.addEventListener('click', prevMonth)
+next.addEventListener('click', nextMonth)
