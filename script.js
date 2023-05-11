@@ -1,3 +1,4 @@
+
 const calendar = document.querySelector('.calendar'),
   data = document.querySelector('.date'),
   daysContainer = document.querySelector('.days'),
@@ -42,8 +43,70 @@ const eventsArr = [
         time: "11:00 AM"
       }
     ]
+  }, 
+  {
+    day: 17,
+    month: 05,
+    year: 2023,
+    events: [
+      {
+        title: "Event 1 lorem ipsun dolar sit genda teds das",
+        time: '10:00 AM'
+      },
+    ]
   }
 ]
+
+//add days after render
+const addListener = () => {
+  const days = document.querySelectorAll('.day')
+  days.forEach((day) => {
+    day.addEventListener('click', (e) => {
+      //set current day as active day
+      activeDay = Number(e.target.innerHTML)
+
+      //remove active from already active day
+      days.forEach((day) => {
+        day.classList.remove('active')
+      })
+
+      //if prev month day clicked goto prev month and add active
+      if(e.target.classList.contains("prev-date")) {
+        prevMonth()
+
+        setTimeout(() => {
+          //select all days of that month
+          const days = document.querySelectorAll('day')
+
+          //after going to prev moth, add active to clicked
+          days.forEach((day) => {
+            if(!day.classList.contains('prev-date') && 
+              day.innerHTML === e.target.innerHTML
+            ) {
+              day.classList.add('active')
+            }
+          })
+        }, 100)
+      } else if (e.target.classList.contains("next-date")) {
+        nextMonth()
+
+        setTimeout(() => {
+          //select all days of that month
+          const days = document.querySelectorAll('day')
+
+          //after going to prev moth, add active to clicked
+          days.forEach((day) => {
+            if(!day.classList.contains('next-date') && 
+              day.innerHTML === e.target.innerHTML
+            ) {
+              day.classList.add('active')
+            }
+          })
+        }, 100)
+      }
+    })
+  })
+}
 
 const initCalendar = () => {
   const firstDay = new Date(year, month, 1)
@@ -107,6 +170,9 @@ const initCalendar = () => {
   }
 
   daysContainer.innerHTML = days
+
+  //add listener after calendar initialized
+  addListener()
 }
 
 initCalendar()
