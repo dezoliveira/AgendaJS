@@ -141,4 +141,61 @@ const gotoDate = () => {
   }
 }
 
+const addEventBtn = document.querySelector('.add-event'),
+  addEventContainer = document.querySelector('.add-event-wrapper'),
+  addEventCloseBtn = document.querySelector('.close'),
+  addEventTitle = document.querySelector('.event-name'),
+  addEventFrom = document.querySelector('.event-time-from'),
+  addEventTo = document.querySelector('.event-time-to')
+
 gotoBtn.addEventListener('click', gotoDate)
+
+addEventBtn.addEventListener('click', () => {
+  addEventContainer.classList.toggle("active")
+})
+
+addEventCloseBtn.addEventListener('click', () => {
+  addEventContainer.classList.remove("active")
+})
+
+document.addEventListener('click', (e) => {
+  if(e.target !== addEventBtn && !addEventContainer.contains(e.target)) {
+    //if click outside (modal like)
+    addEventContainer.classList.remove("active")
+  }
+})
+
+//allow only 50 chars in title
+addEventTitle.addEventListener('input', (e) => {
+  addEventTitle.value = addEventTitle.value.slice(0, 50)
+})
+
+//--- FROM TIME ---
+//format time in from and to
+addEventFrom.addEventListener('input', (e) => {
+  //remove anything else numbers
+  //addEventFrom.value = addEventFrom.value.replace(/[^0-9:]/g, "")
+  //if two numbers entered, auto add :
+  if (addEventFrom.value.length === 2) {
+    addEventFrom.value += ":"
+  }
+  //dont allow user enter mroe than 5 chars
+  if (addEventFrom.value.length > 5) {
+    addEventFrom.value = addEventFrom.value.slice(0, 5)
+  }
+})
+
+//--- TO TIME ---
+//format time in from and to
+addEventTo.addEventListener('input', (e) => {
+  //remove anything else numbers
+  //addEventTo.value = addEventTo.value.replace(/[^0-9:]/g, "")
+  //if two numbers entered, auto add :
+  if (addEventTo.value.length === 2) {
+    addEventTo.value += ":"
+  }
+  //dont allow user enter mroe than 5 chars
+  if (addEventTo.value.length > 5) {
+    addEventTo.value = addEventTo.value.slice(0, 5)
+  }
+})
