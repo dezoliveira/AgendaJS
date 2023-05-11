@@ -76,7 +76,7 @@ const addListener = () => {
 
         setTimeout(() => {
           //select all days of that month
-          const days = document.querySelectorAll('day')
+          const days = document.querySelectorAll('.day')
 
           //after going to prev moth, add active to clicked
           days.forEach((day) => {
@@ -92,7 +92,7 @@ const addListener = () => {
 
         setTimeout(() => {
           //select all days of that month
-          const days = document.querySelectorAll('day')
+          const days = document.querySelectorAll('.day')
 
           //after going to prev moth, add active to clicked
           days.forEach((day) => {
@@ -103,6 +103,10 @@ const addListener = () => {
             }
           })
         }, 100)
+      } else {
+        //remaing current month days
+        e.target.classList.add('active')
+
       }
     })
   })
@@ -148,10 +152,11 @@ const initCalendar = () => {
       && month === new Date().getMonth())
     {
       //if event found also add event class
+      //add active on today at startup
       if (event) {
-        days += `<div class="day today event">${i}</div>`
+        days += `<div class="day today active event">${i}</div>`
       } else {
-        days += `<div class="day today">${i}</div>`
+        days += `<div class="day today active">${i}</div>`
       }
     }
 
@@ -303,3 +308,14 @@ addEventTo.addEventListener('input', (e) => {
     addEventTo.value = addEventTo.value.slice(0, 5)
   }
 })
+
+const eventDay = document.querySelector(".event-day"),
+  eventDate = document.querySelector(".event-date")
+
+//active day events and date at top
+function getActiveDay(date) {
+  const day = new Date(year, month, date)
+  const dayName = day.toString().split(" ")[0]
+  eventDay.innerHTML = dayName
+  eventDate.innerHTML = date + " " + months[month] + " " + year
+}
