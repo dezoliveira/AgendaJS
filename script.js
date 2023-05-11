@@ -12,8 +12,6 @@ let activeDay
 let month = today.getMonth()
 let year = today.getFullYear()
 
-console.log(new Date(year, (month + 1), 0))
-
 const months = [
   'Janeiro',
   'Fevereiro',
@@ -67,17 +65,39 @@ const initCalendar = () => {
   }
 
   //current month days
-  for(let i = 1; i <= lastDate; i++) {
+  for (let i = 1; i <= lastDate; i++) {
+    //check if event is present on current day
+    let event = false
+    eventsArr.forEach((eventObj) => {
+      if (
+        eventObj.day === i &&
+        eventObj.month === month + 1 &&
+        eventObj.year === year
+      ) {
+        //if event found
+        event = true
+      }
+    })
+
     //if days is today, add class today
     if(i === new Date().getDate() 
       && year === new Date().getFullYear() 
       && month === new Date().getMonth())
     {
-      days += `<div class="day today">${i}</div>`
+      //if event found also add event class
+      if (event) {
+        days += `<div class="day today event">${i}</div>`
+      } else {
+        days += `<div class="day today">${i}</div>`
+      }
     }
 
     else {
-      days += `<div class="day">${i}</div>`
+      if (event) {
+        days += `<div class="day event">${i}</div>`
+      } else {
+        days += `<div class="day">${i}</div>`
+      }
     }
   }
 
