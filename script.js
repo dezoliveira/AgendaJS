@@ -29,6 +29,24 @@ const months = [
   'Dezembro'
 ]
 
+const eventsArr = [
+  {
+    day: 21,
+    month: 05,
+    year: 2023,
+    events: [
+      {
+        title: "Event 1 lorem ipsun dolar sit genda teds das",
+        time: '10:00 AM'
+      },
+      {
+        title: "Event 2",
+        time: "11:00 AM"
+      }
+    ]
+  }
+]
+
 const initCalendar = () => {
   const firstDay = new Date(year, month, 1)
   const lastDay = new Date(year, (month + 1), 0)
