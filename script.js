@@ -32,7 +32,7 @@ const months = [
   'Dezembro'
 ]
 
-const eventsArr = [
+/* const eventsArr = [
   {
     day: 21,
     month: 05,
@@ -59,7 +59,27 @@ const eventsArr = [
       },
     ]
   }
-]
+] 
+*/
+
+//set a empty array
+let eventsArr = []
+
+//add events on local Storage
+const saveEvents = () => {
+  localStorage.setItem('events', JSON.stringify(eventsArr))
+}
+
+const getEvents = () => {
+  if (localStorage.getItem('events' === null)) {
+    return
+  }
+
+  eventsArr.push(...JSON.parse(localStorage.getItem('events')))
+}
+
+//then call get
+getEvents()
 
 //active day events and date at top
 const getActiveDay = (date) => {
@@ -103,6 +123,10 @@ const updateEvents = (date) => {
       </div>
     `
   }
+
+  //Save events when new one added
+  saveEvents()
+
 
   eventsContainer.innerHTML = events
 }
