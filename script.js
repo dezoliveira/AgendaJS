@@ -9,7 +9,8 @@ const calendar = document.querySelector('.calendar'),
   dateInput = document.querySelector('.date-input'),
   eventDay = document.querySelector(".event-day"),
   eventDate = document.querySelector(".event-date"),
-  eventsContainer = document.querySelector(".events")
+  eventsContainer = document.querySelector(".events"),
+  addEventSubmit = document.querySelector(".add-event-btn")
 
 let today = new Date()
 let activeDay
@@ -306,6 +307,16 @@ const gotoDate = () => {
   }
 }
 
+const convertTime = (time) => {
+  let timeArr = time.split(":")
+  let timeHour = timeArr[0]
+  let timeMin = timeArr[1]
+  let timeFormat = timeHour >= 12 ? 'PM' : 'AM'
+  timeHour = timeHour % 12 || 12
+  time = timeHour + ":" + timeMin + " " + timeFormat
+  return time
+}
+
 const addEventBtn = document.querySelector('.add-event'),
   addEventContainer = document.querySelector('.add-event-wrapper'),
   addEventCloseBtn = document.querySelector('.close'),
@@ -362,5 +373,119 @@ addEventTo.addEventListener('input', (e) => {
   //dont allow user enter mroe than 5 chars
   if (addEventTo.value.length > 5) {
     addEventTo.value = addEventTo.value.slice(0, 5)
+  }
+})
+
+//function to add events
+addEventSubmit.addEventListener('click', () => {
+  const eventTitle = addEventTitle.value
+  const eventTimeFrom = addEventFrom.value
+  const eventTimeTo = addEventTo.value
+
+  //validations
+  if(eventTitle === "" || eventTimeFrom === '' || eventTimeTo === '') {
+    alert('Please fill all the fields')
+  }
+
+  const timeFromArr = eventTimeFrom.split(':')
+  const timeToArr = eventTimeTo.split(':')
+
+  if(
+    timeFromArr.length !== 2 ||
+    timeToArr.length !== 2 ||
+    timeFromArr[0] > 23 ||
+    timeFromArr[1] > 59 ||
+    timeToArr[0] > 23 ||
+    timeToArr[1] > 59
+  ) {
+    alert('Invalid Time')
+  }
+
+  const timeFrom = convertTime(eventTimeFrom)
+  const timeTo = convertTime(eventTimeTo)
+
+  const newEvent = {
+    title : eventTitle,
+    time: timeFrom + " - " + timeTo,
+  }
+
+  let eventAdded = false
+
+  //check if eventsArr not empty
+  if (eventsArr.length > 0) {
+    //check if current day has already an event
+    eventsArr.forEach((item) => {
+      if(
+        item.day === activeDay &&
+        item.month === month + 1 &&
+        item.year === year
+      ) {
+        item.events.push(newEvent)
+        eventAdded = true
+      }
+    })
+  }
+
+  //if event array empty or current day has no event create a new
+  if (!eventAdded) {
+    eventsArr.push({
+      day: activeDay,
+      month: month + 1,
+      year: year,
+      events: [newEvent]
+    })
+  }
+
+  //remove active from add event form
+  addEventContainer.classList.remove('active')
+  //clear the fields
+  addEventTitle.value = ""
+  addEventFrom.value = ""
+  addEventTo.value = ""
+
+  //show current added event
+  updateEvents(activeDay)
+
+  //add event class to newly event
+  const activeDayElem = document.querySelector('.day.active')
+  if (!activeDayElem.classList.contains('event')) {
+    activeDayElem.classList.add('event')
+  }
+})
+
+//remove events on click
+eventsContainer.addEventListener('click', (e) => {
+  if (e.target.classList.contains('event')) {
+    const eventTitle = e.target.children[0].children[1].innerHTML
+
+    //get title of event and search in the array to delete
+    eventsArr.forEach((event) => {
+      if (
+        event.day === activeDay &&
+        event.month === month + 1 &&
+        event.year === year
+      ) {
+        event.events.forEach((item, index) => {
+          if (item.title === eventTitle) {
+            event.events.splice(index, 1)
+          }
+        })
+
+        //if not event remaing on day, remove complete day
+        if (event.events.length === 0) {
+          eventsArr.splice(eventsArr.indexOf(event), 1)
+          //after remove complete day also remove active class of that day
+
+
+          const activeDayElem = document.querySelector('.day.active')
+          if (activeDayElem.classList.contains('event')) {
+            activeDayElem.classList.remove('event')
+          }
+        }
+      }
+    })
+
+    //after remove, update
+    updateEvents(activeDay)
   }
 })
