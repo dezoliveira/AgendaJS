@@ -32,36 +32,6 @@ const months = [
   'Dezembro'
 ]
 
-/* const eventsArr = [
-  {
-    day: 21,
-    month: 05,
-    year: 2023,
-    events: [
-      {
-        title: "Event 1",
-        time: '10:00 AM'
-      },
-      {
-        title: "Event 2",
-        time: "11:00 AM"
-      }
-    ]
-  }, 
-  {
-    day: 17,
-    month: 05,
-    year: 2023,
-    events: [
-      {
-        title: "Event 1 lorem ipsun dolar sit genda teds das",
-        time: '10:00 AM'
-      },
-    ]
-  }
-] 
-*/
-
 //set a empty array
 let eventsArr = []
 
@@ -77,9 +47,6 @@ const getEvents = () => {
 
   eventsArr.push(...JSON.parse(localStorage.getItem('events')))
 }
-
-//then call get
-getEvents()
 
 //active day events and date at top
 const getActiveDay = (date) => {
@@ -130,6 +97,9 @@ const updateEvents = (date) => {
 
   eventsContainer.innerHTML = events
 }
+
+//then call get
+getEvents()
 
 //add days after render
 const addListener = () => {
