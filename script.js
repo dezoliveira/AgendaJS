@@ -45,7 +45,7 @@ const getEvents = () => {
     return
   }
 
-  eventsArr.push(...JSON.parse(localStorage.getItem('events')))
+  //eventsArr.push(...JSON.parse(localStorage.getItem('events')))
 }
 
 //active day events and date at top
